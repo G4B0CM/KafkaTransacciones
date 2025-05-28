@@ -29,7 +29,9 @@ services:
             - kafka
         environment:
             - PYTHONUNBUFFERED=1
-        command: python producer.py
+            - PYTHONPATH=/app
+        command: python Producers/producer.py
+
     producer1:
         build: .
         container_name: producer1
@@ -37,7 +39,9 @@ services:
             - kafka
         environment:
             - PYTHONUNBUFFERED=1
-        command: python producer1.py
+            - PYTHONPATH=/app
+        command: python Producers/producer1.py
+
     producer2:
         build: .
         container_name: producer2
@@ -45,7 +49,8 @@ services:
             - kafka
         environment:
             - PYTHONUNBUFFERED=1
-        command: python producer2.py
+            - PYTHONPATH=/app
+        command: python Producers/producer2.py
 
     consumer:
         build: .
@@ -54,7 +59,8 @@ services:
             - kafka
         environment:
             - PYTHONUNBUFFERED=1
-        command: python consumer.py
+            - PYTHONPATH=/app
+        command: python Consumer/consumer.py
 
     fraud_detector:
         build: .
@@ -63,4 +69,6 @@ services:
             - kafka
         environment:
             - PYTHONUNBUFFERED=1
-        command: python fraud_detector.py
+            - PYTHONPATH=/app
+        command: python fraudDetector/fraud_detector.py
+

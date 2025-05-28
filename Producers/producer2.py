@@ -4,12 +4,12 @@ from confluent_kafka import Producer
 import json
 import random
 import time
-from events import PurchaseEvent
+from EventBaseClass.events import PurchaseEvent
 
-producer_conf = {
-    'bootstrap.servers': 'kafka:9092'
-}
+with open("Secrets/config.json", "r") as f:
+    config = json.load(f)
 
+producer_conf = config['producer1']
 producer = Producer(producer_conf)
 
 def delivery_report(err, msg):

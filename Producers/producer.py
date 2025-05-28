@@ -4,11 +4,12 @@ from confluent_kafka import Producer
 import json
 import random
 import time
-from events import PurchaseEvent
+from EventBaseClass.events import PurchaseEvent
 
-producer_conf = {
-    'bootstrap.servers': 'kafka:9092'
-}
+with open("Secrets/config.json", "r") as f:
+    config = json.load(f)
+
+producer_conf = config['producer1']
 
 producer = Producer(producer_conf)
 
@@ -18,9 +19,9 @@ def delivery_report(err, msg):
     else:
         print(f'Mensaje enviado a {msg.topic()} [{msg.partition()}]')
 
-print("🚀 Enviando eventos masivos de compra...")
+print("Enviando eventos masivos de compra...")
 
-# Generar 10,000 eventos de prueba
+
 for i in range(10000):
     event = PurchaseEvent(
         user_id=f"user_{random.randint(1, 100)}",
@@ -35,11 +36,11 @@ for i in range(10000):
         value=event.to_json().encode("utf-8"),
         callback=delivery_report
     )
-    sleep_time = random.uniform(0.01, 0.1)  # Simular latencia
+    sleep_time = random.uniform(0.01, 0.1)
     time.sleep(sleep_time)
-    # Flush si llegamos al límite del buffer (opcional)
+    
     if i % 1000 == 0:
         producer.flush()
 
-producer.flush()  # Espera a que todos los mensajes se entreguen
+producer.flush()  
 print("Todos los eventos han sido enviados. P")
